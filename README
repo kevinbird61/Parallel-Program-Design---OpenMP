@@ -1,0 +1,9 @@
+How to compile an omp program:
+
+Compile:
+
+	gcc -g -Wall -fopenmp -o omp_hello omp_hello.c
+	
+Execute:
+
+	./ omp_hello 4

@@ -1,0 +1,27 @@
+F74026103 瞿旭民 HW5 作業報告
+
+1.
+In counSorting : 
+shared(array,size,temp)
+private(i,j,count)
+2.
+若是切割得當，array計算量儲存於temp
+而最後是用temp[count] = array[i]
+分批（分配i的部份）之後執行，基本上都會掃過整個array
+會準確知道到底這個被選到的值比幾個大幾個小，
+所以該出現在哪邊，該值就會出現在那邊。
+3.
+memcpy不行做平行化。因為如果thread1做了一些變化並使用了memcpy，
+那thread2再做變化後使用memcpy後，會覆蓋到thread1所更動過的值，導致錯誤發生。
+而若要改寫memcpy的部份，我認為如果能夠指定更動copy的記憶體位置部份，不要一次動到全部，應該就能做parallel。
+4.
+詳看附件
+5.
+目前測試：平行化後的程式比較慢。
+執行結果：
+size both is 100000 ==>>
+And The UnOpenMP Time is 66.050003 ; Using is 87.320000 （sec）time
+和C的library中的qsort做比較：
+Not using omp : 0.050000 ; using omp is : 0.420000 (sec) time
+情況相同，但是執行時間上，比count sorting快很多 
+
