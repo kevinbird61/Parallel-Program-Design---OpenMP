@@ -17,11 +17,13 @@ memcpy不行做平行化。因為如果thread1做了一些變化並使用了memc
 4.
 詳看附件
 5.
-目前測試：平行化後的程式比較慢。
+改採用omp_get_wtime()後，情況有所改善。
+parallel時間會比serial來的快許多。
 執行結果：
 size both is 100000 ==>>
-And The UnOpenMP Time is 66.050003 ; Using is 87.320000 （sec）time
+And The UnOpenMP Time is 66.097436 ; Using is 28.023301 time（sec）time
 和C的library中的qsort做比較：
-Not using omp : 0.050000 ; using omp is : 0.420000 (sec) time
-情況相同，但是執行時間上，比count sorting快很多 
+（小測試：QSORT沒辦法使用omp）
+0.040000~0.050000 (sec) time
+執行時間上，比count sorting快很多 
 

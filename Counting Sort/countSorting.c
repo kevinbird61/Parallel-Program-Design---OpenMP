@@ -11,19 +11,17 @@
 int *Random_generate_array(int size);
 
 int main(int argc , char* argv[]){
+	double start , end ,result;
 	/* Define the variable */
 	int size,i,j,count;
 	int thread_count;
 	thread_count = strtol(argv[1] , NULL , 10);	
 	int *array= Random_generate_array(A_SIZE);
 	size = A_SIZE;
-	clock_t start , end;
-	float result;
 	/* Counting Time */
-	start = clock();
+	start = omp_get_wtime();//clock();
 	/* Counting Sort */
 	int *temp = malloc(size*sizeof(int));
-	//#pragma omp parallel for num_threads(thread_count) default(none) shared(array,size,temp) private(i,j,count)
 	for(i=0;i<size;i++){
 		count = 0 ;
 		for(j = 0;j < size ; j++)
@@ -34,19 +32,18 @@ int main(int argc , char* argv[]){
 		temp[count] = array[i];
 	} 
 	// End the measurement
-	end = clock();
+	end = omp_get_wtime();//clock();
 	memcpy(array , temp , size*sizeof(int));
 	free(temp);
 	/* Print Result */
 	for(i=0;i<A_SIZE;i++){
 		printf("%d ", array[i] );
 	}
-	result = ((end-start)/(double)CLOCKS_PER_SEC);
-	//printf("\nAnd The Using Parallel Time is %lf\n",((end-start)/(double)CLOCKS_PER_SEC) );
+	result = end - start;
 	/* Stop and return */
 	array= Random_generate_array(A_SIZE);
 	/* Counting Time */
-	start = clock();
+	start = omp_get_wtime();//clock();
 	/* Counting Sort */
 	temp = malloc(size*sizeof(int));
 	#pragma omp parallel for num_threads(thread_count) default(none) shared(array,size,temp) private(i,j,count)
@@ -60,14 +57,14 @@ int main(int argc , char* argv[]){
 		temp[count] = array[i]; 
 	} 
 	// End the measurement
-	end = clock();
+	end =omp_get_wtime();//clock();
 	memcpy(array , temp , size*sizeof(int));
 	free(temp);
 	/* Print Result */
 	for(i=0;i<A_SIZE;i++){
 		printf("%d ", array[i] );
 	}
-	printf("\nAnd The UnOpenMP Time is %lf ; Using is %lf time\n", result ,((end-start)/(double)CLOCKS_PER_SEC)  );	
+	printf("\nAnd The UnOpenMP Time is %lf ; Using is %lf time\n", result , end-start);	
 	return 0;	
 }
 
